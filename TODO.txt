@@ -9,7 +9,7 @@ ________________________________________________________________________________
 
 PHASE 1: BACKEND
 
-[ ] 1. Structure FlightMVC
+[x] 1. Structure FlightMVC
     - Installer Flight
     - Creer dossiers: app/controllers, app/models, app/config, public
     - Fichiers: composer.json, public/index.php, app/config/database.php
