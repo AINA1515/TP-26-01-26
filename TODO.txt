@@ -15,7 +15,7 @@ PHASE 1: BACKEND
     - Fichiers: composer.json, public/index.php, app/config/database.php
 
 [ ] 2. Base de donnees
-    - Table users: id, username, password, email, full_name, avatar, is_online
+    - Table users: id, username, password, email, avatar, is_online
     - Table messages: id, from_user_id, to_user_id, message_text, is_read, created_at
     - Fichiers: database/schema.sql, database/seed_data.sql
     - Creer 4 utilisateurs test (user1, user2, user3, admin)
