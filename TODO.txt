@@ -28,8 +28,8 @@ PHASE 1: BACKEND
 [ ] 4. API Messages
     - GET /api/messages -> toutes conversations
     - GET /api/messages/:userId -> conversation specifique
-    - POST /api/messages -> envoyer message
-    - PUT /api/messages/:id/read -> marquer lu
+    - POST /api/messages -> envoyer message 
+    - GET /api/messages/:id/read -> marquer lu
     - GET /api/messages/unread -> compteur non lus
     - Fichier: app/controllers/MessagesController.php
 
