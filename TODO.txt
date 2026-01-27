@@ -14,16 +14,16 @@ PHASE 1: BACKEND
     - Creer dossiers: app/controllers, app/models, app/config, public
     - Fichiers: composer.json, public/index.php, app/config/database.php
 
-[x] 2. Base de donnees
-    - Table users
-    - Table messages
-    - Fichiers: database/schema.sql, database/seed_data.sql
-    - Creer 4 utilisateurs test (user1, user2, user3, admin)
+[ ] 2. Base de donnees (ok)
+    - Table users: id, username, password, email, avatar, is_online (ok)
+    - Table messages: id, from_user_id, to_user_id, message_text, is_read, created_at (ok)
+    - Fichiers: database/schema.sql, database/seed_data.sql (ok)
+    - Creer 4 utilisateurs test (user1, user2, user3, admin) (ok)
 
-[ ] 3. Authentification
-    - app/models/User.php: findByUsername(), authenticate()
-    - app/controllers/AuthController.php: login(), logout()
-    - Sessions PHP
+[ ] 3. Authentification (ok)
+    - app/models/User.php: findByUsername(), authenticate() (ok)
+    - app/controllers/AuthController.php: login(), logout() (ok)
+    - Sessions PHP (wip)
 
 [ ] 4. API Messages
     - GET /api/messages -> toutes conversations
