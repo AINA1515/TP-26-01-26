@@ -7,7 +7,6 @@ create table users (
     username varchar(50) not null unique,
     mdp varchar(255),
     email varchar(100)  unique,
-    is_online boolean default false,
     photoProfil varchar(255) ,
     created_at timestamp default current_timestamp
 );
