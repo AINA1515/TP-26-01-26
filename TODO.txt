@@ -44,8 +44,8 @@ PHASE 2: INTEGRATION FRONTEND
 
 [ ] 6. Connexion API
     - Modifier: src-modern/scripts/components/messages.js
-    - Remplacer donnees fictives par fetch() API
-    - Gestion etats: loading, error, empty
+    - Remplacer donnees fictives
+    - Gestion etats: error, empty
 
 [ ] 7. Systeme Lu/Non Lu
     - Badges messages non lus
