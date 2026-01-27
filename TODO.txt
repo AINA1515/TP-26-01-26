@@ -20,11 +20,10 @@ PHASE 1: BACKEND
     - Fichiers: database/schema.sql, database/seed_data.sql (ok)
     - Creer 4 utilisateurs test (user1, user2, user3, admin) (ok)
 
-[ ] 3. Authentification
-    - app/models/User.php: findByUsername(), authenticate()
-    - app/controllers/AuthController.php: login(), logout()
-    - app/middleware/AuthMiddleware.php: protection routes
-    - Sessions PHP
+[ ] 3. Authentification (ok)
+    - app/models/User.php: findByUsername(), authenticate() (ok)
+    - app/controllers/AuthController.php: login(), logout() (ok)
+    - Sessions PHP (wip)
 
 [ ] 4. API Messages
     - GET /api/messages -> toutes conversations
