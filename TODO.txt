@@ -1,0 +1,79 @@
+PROJET: Integration Bootstrap Admin Template dans FlightMVC - Messages
+
+CONTEXTE:
+- Manque: Backend PHP, Base de donnees, Authentification
+
+________________________________________________________________________________
+TACHES A REALISER
+________________________________________________________________________________
+
+PHASE 1: BACKEND
+
+[x] 1. Structure FlightMVC
+    - Installer Flight
+    - Creer dossiers: app/controllers, app/models, app/config, public
+    - Fichiers: composer.json, public/index.php, app/config/database.php
+
+[ ] 2. Base de donnees
+    - Table users: id, username, password, email, full_name, avatar, is_online
+    - Table messages: id, from_user_id, to_user_id, message_text, is_read, created_at
+    - Fichiers: database/schema.sql, database/seed_data.sql
+    - Creer 4 utilisateurs test (user1, user2, user3, admin)
+
+[ ] 3. Authentification
+    - app/models/User.php: findByUsername(), authenticate()
+    - app/controllers/AuthController.php: login(), logout()
+    - app/middleware/AuthMiddleware.php: protection routes
+    - Sessions PHP
+
+[ ] 4. API Messages
+    - GET /api/messages -> toutes conversations
+    - GET /api/messages/:userId -> conversation specifique
+    - POST /api/messages -> envoyer message
+    - PUT /api/messages/:id/read -> marquer lu
+    - GET /api/messages/unread -> compteur non lus
+    - Fichier: app/controllers/MessagesController.php
+
+[ ] 5. Modele Message
+    - app/models/Message.php
+    - Methodes: getConversations(), getConversationWith(), send(), 
+      markAsRead(), getUnreadCount(), markConversationAsRead()
+
+
+PHASE 2: INTEGRATION FRONTEND
+
+[ ] 6. Connexion API
+    - Modifier: src-modern/scripts/components/messages.js
+    - Remplacer donnees fictives
+    - Gestion etats: error, empty
+
+[ ] 7. Systeme Lu/Non Lu
+    - Badges messages non lus
+    - Marquer auto comme lu a l_ouverture
+    - Update compteur temps reel
+    - Modifier: messages.js, messages.html, CSS
+
+[ ] 8. Bouton Rafraichir
+    - Bouton avec icone rotation
+    - refreshMessages() function
+    - Modifier: messages.html, messages.js
+
+
+PHASE 3: FINALISATION
+
+[ ] 9. Login et Sessions
+    - Creer: public/login.html avec formulaire
+    - Liste utilisateurs test affichee
+    - Protection routes avec middleware
+    - Bouton deconnexion header
+
+[ ] 10. Tests
+    - Authentification: login, logout, acces protege
+    - Messages: envoi, reception, lu/non lu
+    - Rafraichissement
+    - Edge cases: message vide, long, caracteres speciaux
+
+[ ] 11. Finitions UI
+    - Timestamps lisibles
+    - Avatars utilisateurs
+    - Indicateur en ligne
