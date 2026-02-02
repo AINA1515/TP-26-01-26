@@ -7,9 +7,7 @@ use Flight;
 class UserModel
 {
 
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public static function getAllUser()
     {
@@ -39,10 +37,14 @@ class UserModel
 
     public static function createUser($username, $password, $email, $avatar = null)
     {
+        $hashedPassword = null;
         $db = Flight::db();
-        $stmt = $db->prepare("INSERT INTO users (username, password, email, photoProfil) VALUES (:username, :password, :email, :photoProfil)");
+        $stmt = $db->prepare("INSERT INTO users (username, mdp, email, photoProfil) VALUES (:username, :password, :email, :photoProfil)");
         $stmt->bindParam(':username', $username);
-        $stmt->bindParam(':password', password_hash($password, PASSWORD_DEFAULT));
+        if (!empty($password)) {
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        }
+        $stmt->bindParam(':password', $hashedPassword);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':photoProfil', $avatar);
         return $stmt->execute();

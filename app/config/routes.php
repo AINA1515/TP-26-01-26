@@ -1,7 +1,7 @@
 <?php
 
-use app\controllers\ApiExampleController;
 use app\controllers\MessagesController;
+use app\controllers\UserController;
 use app\middlewares\SecurityHeadersMiddleware;
 use flight\Engine;
 use flight\net\Router;
@@ -12,22 +12,33 @@ use flight\net\Router;
  */
 
 // This wraps all routes in the group with the SecurityHeadersMiddleware
-$router->group('', function(Router $router) use ($app) {
+$router->group('', function (Router $router) use ($app) {
 
-	$router->get('/', function() use ($app) {
-		$app->render('welcome', [ 'message' => 'You are gonna do great things!' ]);
+	$router->get('/login', function () use ($app) {
+		$app->render('login');
 	});
 
-	$router->get('/hello-world/@name,@surname', function($name, $surname) {
-		echo '<h1>Hello world! Oh hey '.$name.' '. $surname .' !</h1>';
+	$router->post('/login', function () use ($app) {
+		if (isset($_POST["pseudo"])) {
+			$username = $_POST["pseudo"];
+			$userController = new UserController($app);
+			$result = $userController->login($username);
+			if (isset($result['success']) && isset($result['user'])) {
+				$_SESSION['user_id'] = $result['user']['id'];
+				$app->render('welcome');
+			} else {
+				$app->render('login', ['error' => $result['error']]);
+			}
+		}
 	});
 
-	$router->group('/api', function() use ($router) {
-		// Messages API routes
-		$router->get('/messages', [ MessagesController::class, 'getAllConversations' ]);
-		$router->get('/messages/@userId:[0-9]', [ MessagesController::class, 'getConversation' ]);
-		$router->post('/messages', [ MessagesController::class, 'sendMessage' ]);
-		$router->get('/messages/unread', [ MessagesController::class, 'getUnreadCount' ]);
+	$router->get('/logout', function () use ($app) {
+		$userController = new UserController($app);
+		$result = $userController->logout();
+		if (isset($result['success'])) {
+			$app->render('login');
+		} else {
+			$app->render('welcome', ['error' => $result['error']]);
+		}
 	});
-	
-}, [ SecurityHeadersMiddleware::class ]); 
+}, [SecurityHeadersMiddleware::class]);

@@ -23,7 +23,7 @@ PHASE 1: BACKEND
 [x] 3. Authentification (ok)
     - app/models/User.php: findByUsername(), authenticate() (ok)
     - app/controllers/AuthController.php: login(), logout() (ok)
-    - Sessions PHP (wip)
+    - Sessions PHP (ok)
 
 [ ] 4. API Messages
     [x]- GET /api/messages -> toutes conversations

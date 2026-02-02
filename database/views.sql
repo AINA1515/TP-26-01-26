@@ -15,6 +15,7 @@ SELECT
     u_sender.photoProfil as sender_photo,
     u_recipient.username as recipient_name,
     u_recipient.photoProfil as recipient_photo,
+    u_recipient.is_online as recipient_online
 FROM messages m
 JOIN users u_sender ON m.from_user_id = u_sender.id
 JOIN users u_recipient ON m.to_user_id = u_recipient.id;
