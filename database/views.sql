@@ -13,10 +13,8 @@ SELECT
     m.created_at,
     u_sender.username as sender_name,
     u_sender.photoProfil as sender_photo,
-    u_sender.is_online as sender_online,
     u_recipient.username as recipient_name,
     u_recipient.photoProfil as recipient_photo,
-    u_recipient.is_online as recipient_online
 FROM messages m
 JOIN users u_sender ON m.from_user_id = u_sender.id
 JOIN users u_recipient ON m.to_user_id = u_recipient.id;
@@ -32,10 +30,8 @@ SELECT
     m.is_read,
     u_from.username as from_username,
     u_from.photoProfil as from_photo,
-    u_from.is_online as from_online,
     u_to.username as to_username,
-    u_to.photoProfil as to_photo,
-    u_to.is_online as to_online
+    u_to.photoProfil as to_photo
 FROM messages m
 JOIN users u_from ON m.from_user_id = u_from.id
 JOIN users u_to ON m.to_user_id = u_to.id
