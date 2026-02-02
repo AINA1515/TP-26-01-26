@@ -1,4 +1,6 @@
 <?php
+session_start();
+require __DIR__ . '/../vendor/autoload.php';
 
 /*
  * FlightPHP Framework
@@ -24,5 +26,14 @@
    Cessna 402  (Wings)
    by Dick Williams, rjw1@tyrell.net
 */
+
+Flight::register('db', 'PDO', [
+  'mysql:host=127.0.0.1;dbname=siteTemplate;charset=utf8',
+  'root',
+  ''
+], function ($db) {
+  $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+});
+
 $ds = DIRECTORY_SEPARATOR;
-require(__DIR__. $ds . '..' . $ds . 'app' . $ds . 'config' . $ds . 'bootstrap.php');
+require(__DIR__ . $ds . '..' . $ds . 'app' . $ds . 'config' . $ds . 'bootstrap.php');
