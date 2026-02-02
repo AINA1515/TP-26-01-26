@@ -1,13 +1,3 @@
-<?php
-if (isset($error)) {
-?>
-    <script>
-        alert("Une erreur s'est produite lors de la connexion : <?php echo $error; ?>");
-    </script>
-<?php
-}
-?>
-
 <!DOCTYPE html>
 <html lang="fr" data-bs-theme="dark">
 
@@ -15,29 +5,58 @@ if (isset($error)) {
     <meta charset="UTF-8">
     <title>Login</title>
     <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/icon/bootstrap-icons.css" rel="stylesheet">
 </head>
 
-<body class="bg-dark text-white d-flex justify-content-center align-items-center vh-100 position-relative">
+<body class="d-flex justify-content-center align-items-center vh-100"
+      style="background: linear-gradient(135deg, #0b1a3d, #000000);">
 
-    <div class="card bg-dark text-white shadow p-4" style="width: 100%; max-width: 400px;">
-        <h3 class="text-center mb-4">Connexion</h3>
+    <div class="row g-4 justify-content-center w-100">
+        <div class="col-lg-4">
+            <div class="card bg-dark bg-opacity-75 shadow-lg">
 
-        <form method="post" action="/login">
-            <div class="mb-3">
-                <label for="pseudo" class="form-label">Pseudo</label>
-                <input
-                    type="text"
-                    class="form-control bg-dark text-white"
-                    id="pseudo"
-                    name="pseudo"
-                    placeholder="Entrez votre pseudo"
-                    required>
+                <!-- Header -->
+                <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">
+                        <i class="bi bi-person-circle me-2 text-primary"></i>Login
+                    </h5>
+                    <?php if(isset($_SESSION['user_id'])): ?>
+                        <a href="/logout" class="btn btn-outline-light btn-sm">Déconnexion</a>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Body -->
+                <div class="card-body text-white">
+                    <?php if (isset($error)): ?>
+                        <div class="alert alert-danger">
+                            <?= htmlspecialchars($error) ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <form method="post" action="/login">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Pseudo</label>
+                            <div class="input-group input-group-lg">
+                                <span class="input-group-text bg-secondary text-white">
+                                    <i class="bi bi-person"></i>
+                                </span>
+                                <input
+                                    type="text"
+                                    class="form-control bg-transparent text-white border-white"
+                                    name="pseudo"
+                                    placeholder="Entrez votre pseudo"
+                                    required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
+                        </button>
+                    </form>
+                </div>
+
             </div>
-
-            <button type="submit" class="btn btn-primary w-100">
-                Se connecter
-            </button>
-        </form>
+        </div>
     </div>
 
 </body>
