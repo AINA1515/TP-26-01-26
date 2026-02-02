@@ -18,6 +18,11 @@ $router->group('', function(Router $router) use ($app) {
 		$app->render('welcome', [ 'message' => 'You are gonna do great things!' ]);
 	});
 
+	$router->get('/message', function() use ($app) {
+		$app->render('message', [ 'csp_nonce' => $app->get('csp_nonce') ]);
+	});
+
+
 	$router->get('/hello-world/@name,@surname', function($name, $surname) {
 		echo '<h1>Hello world! Oh hey '.$name.' '. $surname .' !</h1>';
 	});
