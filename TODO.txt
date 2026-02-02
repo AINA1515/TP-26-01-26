@@ -14,26 +14,26 @@ PHASE 1: BACKEND
     - Creer dossiers: app/controllers, app/models, app/config, public
     - Fichiers: composer.json, public/index.php, app/config/database.php
 
-[ ] 2. Base de donnees (ok)
+[x] 2. Base de donnees (ok)
     - Table users: id, username, password, email, avatar, is_online (ok)
     - Table messages: id, from_user_id, to_user_id, message_text, is_read, created_at (ok)
     - Fichiers: database/schema.sql, database/seed_data.sql (ok)
     - Creer 4 utilisateurs test (user1, user2, user3, admin) (ok)
 
-[ ] 3. Authentification (ok)
+[x] 3. Authentification (ok)
     - app/models/User.php: findByUsername(), authenticate() (ok)
     - app/controllers/AuthController.php: login(), logout() (ok)
     - Sessions PHP (wip)
 
 [ ] 4. API Messages
-    - GET /api/messages -> toutes conversations
-    - GET /api/messages/:userId -> conversation specifique
-    - POST /api/messages -> envoyer message 
-    - GET /api/messages/:id/read -> marquer lu
-    - GET /api/messages/unread -> compteur non lus
-    - Fichier: app/controllers/MessagesController.php
+    [x]- GET /api/messages -> toutes conversations
+    [x]- GET /api/messages/:userId -> conversation specifique
+    [x]- POST /api/messages -> envoyer message 
+    []- GET /api/messages/:id/read -> marquer lu
+    []- GET /api/messages/unread -> compteur non lus
+    []x- Fichier: app/controllers/MessagesController.php
 
-[ ] 5. Modele Message
+[x] 5. Modele Message
     - app/models/Message.php
     - Methodes: getConversations(), getConversationWith(), send(), 
       markAsRead(), getUnreadCount(), markConversationAsRead()
