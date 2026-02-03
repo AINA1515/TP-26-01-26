@@ -32,6 +32,15 @@ $router->group('', function (Router $router) use ($app) {
 		}
 	});
 
+	$router->get('/message', function() use ($app) {
+		$app->render('message', [ 'csp_nonce' => $app->get('csp_nonce') ]);
+	});
+
+
+	$router->get('/hello-world/@name,@surname', function($name, $surname) {
+		echo '<h1>Hello world! Oh hey '.$name.' '. $surname .' !</h1>';
+	});
+
 	$router->get('/logout', function () use ($app) {
 		$userController = new UserController($app);
 		$result = $userController->logout();
@@ -42,3 +51,4 @@ $router->group('', function (Router $router) use ($app) {
 		}
 	});
 }, [SecurityHeadersMiddleware::class]);
+
