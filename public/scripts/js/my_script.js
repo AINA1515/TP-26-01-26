@@ -30,21 +30,31 @@ function renderConversationsList() {
     }
     
     usersList.innerHTML = conversations.map(conv => {
-        const initial = conv.username.charAt(0).toUpperCase();
+        const photoUrl = (conv.photoProfil && conv.photoProfil.trim() !== '') ? conv.photoProfil : '/assets/images/avatar-placeholder.svg';
         const unreadBadge = conv.unread_count > 0 
             ? `<span class="unread-badge">${conv.unread_count}</span>` 
             : '';
         
         return `
-            <div class="user-item ${selectedUser && selectedUser.contact_id === conv.contact_id ? 'active' : ''}" 
-                    data-user-id="${conv.contact_id}" data-username="${conv.username.replace(/"/g, '&quot;')}">
-                <div class="user-avatar">${initial}</div>
-                <div class="user-info">
-                    <div class="user-name">${conv.username}</div>
-                    <div class="user-last-message">${conv.last_message || 'Pas de messages'}</div>
+            <a href="#" class="conversation-item ${selectedUser && selectedUser.contact_id === conv.contact_id ? 'active' : ''}" 
+                    data-user-id="${conv.contact_id}" 
+                    data-username="${conv.username.replace(/"/g, '&quot;')}"
+                    data-photo="${conv.photoProfil || ''}">
+                <div class="conversation-avatar">
+                    <img src="${photoUrl}" alt="${conv.username}">
                 </div>
-                ${unreadBadge}
-            </div>
+                <div class="conversation-info">
+                    <div class="conversation-header">
+                        <h6 class="conversation-name">${conv.username}</h6>
+                        <span class="conversation-time">${new Date(conv.last_message_time).toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})}</span>
+                    </div>
+                    <p class="conversation-preview">${conv.last_message || 'Pas de messages'}</p>
+                    <div class="conversation-footer">
+                        <span class="conversation-type">User</span>
+                        ${unreadBadge}
+                    </div>
+                </div>
+            </a>
         `;
     }).join('');
 }
@@ -58,28 +68,38 @@ function filterUsers() {
     
     const usersList = document.getElementById('usersList');
     usersList.innerHTML = filteredConversations.map(conv => {
-        const initial = conv.username.charAt(0).toUpperCase();
+        const photoUrl = (conv.photoProfil && conv.photoProfil.trim() !== '') ? conv.photoProfil : '/assets/images/avatar-placeholder.svg';
         const unreadBadge = conv.unread_count > 0 
             ? `<span class="unread-badge">${conv.unread_count}</span>` 
             : '';
         
         return `
-            <div class="user-item ${selectedUser && selectedUser.contact_id === conv.contact_id ? 'active' : ''}" 
-                    data-user-id="${conv.contact_id}" data-username="${conv.username.replace(/"/g, '&quot;')}">
-                <div class="user-avatar">${initial}</div>
-                <div class="user-info">
-                    <div class="user-name">${conv.username}</div>
-                    <div class="user-last-message">${conv.last_message || 'Pas de messages'}</div>
+            <a href="#" class="conversation-item ${selectedUser && selectedUser.contact_id === conv.contact_id ? 'active' : ''}" 
+                    data-user-id="${conv.contact_id}" 
+                    data-username="${conv.username.replace(/"/g, '&quot;')}"
+                    data-photo="${conv.photoProfil || ''}">
+                <div class="conversation-avatar">
+                    <img src="${photoUrl}" alt="${conv.username}">
                 </div>
-                ${unreadBadge}
-            </div>
+                <div class="conversation-info">
+                    <div class="conversation-header">
+                        <h6 class="conversation-name">${conv.username}</h6>
+                        <span class="conversation-time">${new Date(conv.last_message_time).toLocaleTimeString('fr-FR', {hour: '2-digit', minute: '2-digit'})}</span>
+                    </div>
+                    <p class="conversation-preview">${conv.last_message || 'Pas de messages'}</p>
+                    <div class="conversation-footer">
+                        <span class="conversation-type">User</span>
+                        ${unreadBadge}
+                    </div>
+                </div>
+            </a>
         `;
     }).join('');
 }
 
-async function selectConversation(userId, username) {
+async function selectConversation(userId, username, photoProfil = null) {
     console.log("selected");
-    selectedUser = { contact_id: userId, username: username };
+    selectedUser = { contact_id: userId, username: username, photoProfil: photoProfil };
     renderConversationsList();
     
     try {
@@ -109,37 +129,69 @@ async function selectConversation(userId, username) {
 
 function renderConversation(messages, username) {
     const conversationView = document.getElementById('conversationView');
-    const initial = username.charAt(0).toUpperCase();
+    const photoUrl = (selectedUser?.photoProfil && selectedUser.photoProfil.trim() !== '') ? selectedUser.photoProfil : '/assets/images/avatar-placeholder.svg';
+    const messagePhotoUrl = photoUrl;
+    const currentUserId = parseInt(document.body.dataset.currentUserId || '0');
     
     conversationView.innerHTML = `
-        <div class="conversation-header">
-            <div class="d-flex align-items-center gap-2">
-                <div class="user-avatar">${initial}</div>
-                <h5 class="mb-0">${username}</h5>
-            </div>
-        </div>
-        <div class="messages-container" id="messagesContainer">
-            ${messages.map(msg => {
-                const isSent = msg.from_user_id !== selectedUser.contact_id;
-                const messageClass = isSent ? 'sent' : 'received';
-                const time = new Date(msg.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-                
-                return `
-                    <div class="message ${messageClass}">
-                        <div class="message-bubble">
-                            <div>${msg.message_text}</div>
-                            <div class="message-time">${time}</div>
-                        </div>
+        <div class="active-chat">
+            <div class="chat-header">
+                <div class="chat-user-info">
+                    <div class="chat-avatar-container">
+                        <img src="${photoUrl}" alt="${username}" class="chat-avatar">
                     </div>
-                `;
-            }).join('')}
-        </div>
-        <div class="message-input-area">
-            <form id="messageForm" class="d-flex gap-2">
-                <input type="text" class="form-control" id="messageInput" 
-                        placeholder="Tapez votre message..." required>
-                <button type="submit" class="btn btn-primary">Envoyer</button>
-            </form>
+                    <div class="chat-details">
+                        <h6 class="chat-name">${username}</h6>
+                        <p class="chat-status">● Online</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="messagesContainer">
+                <div class="date-separator">
+                    <span class="date-label">Today</span>
+                </div>
+                
+                <div class="message-group">
+                    ${messages.map(msg => {
+                        const isSent = msg.from_user_id === currentUserId;
+                        const time = new Date(msg.created_at).toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+                        
+                        return `
+                            <div class="message ${isSent ? 'own-message' : ''}">
+                                ${!isSent ? `<img src="${messagePhotoUrl}" alt="${username}" class="message-avatar">` : ''}
+                                <div class="message-bubble">
+                                    <div class="message-content">
+                                        <p>${msg.message_text}</p>
+                                    </div>
+                                    <div class="message-info">
+                                        <span class="message-time">${time}</span>
+                                        ${isSent ? `
+                                            <span class="message-status">
+                                                <i class="bi ${msg.is_read ? 'bi-check-all' : 'bi-check'}"></i>
+                                            </span>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+            
+            <div class="chat-input">
+                <div class="input-container">
+                    <div class="message-input">
+                        <form id="messageForm" class="d-flex align-items-center gap-2 w-100">
+                            <input type="text" class="form-control" id="messageInput" 
+                                    placeholder="Type a message..." required>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-send"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     `;
     
@@ -223,15 +275,22 @@ function renderAllUsersList(filteredUsers = null) {
     }
     
     usersList.innerHTML = usersToRender.map(user => {
-        const initial = user.username.charAt(0).toUpperCase();
+        const photoUrl = (user.photoProfil && user.photoProfil.trim() !== '') ? user.photoProfil : '/assets/images/avatar-placeholder.svg';
         
         return `
-            <div class="user-item" data-user-id="${user.id}" data-username="${user.username.replace(/"/g, '&quot;')}">
-                <div class="user-avatar">${initial}</div>
-                <div class="user-info">
-                    <div class="user-name">${user.username}</div>
+            <a href="#" class="conversation-item" 
+                    data-user-id="${user.id}" 
+                    data-username="${user.username.replace(/"/g, '&quot;')}"
+                    data-photo="${user.photoProfil || ''}">
+                <div class="conversation-avatar">
+                    <img src="${photoUrl}" alt="${user.username}">
                 </div>
-            </div>
+                <div class="conversation-info">
+                    <div class="conversation-header">
+                        <h6 class="conversation-name">${user.username}</h6>
+                    </div>
+                </div>
+            </a>
         `;
     }).join('');
 }
@@ -251,9 +310,9 @@ function closeModal(modal){
     }
 }
 
-function startNewConversation(userId, username) {
+function startNewConversation(userId, username, photoProfil = null) {
     closeModal(newMessageModal);
-    selectConversation(userId, username);
+    selectConversation(userId, username, photoProfil);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -292,11 +351,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const usersList = document.getElementById('usersList');
     if (usersList) {
         usersList.addEventListener('click', (e) => {
-            const userItem = e.target.closest('.user-item');
+            const userItem = e.target.closest('.conversation-item');
             if (userItem) {
+                e.preventDefault();
                 const userId = parseInt(userItem.dataset.userId);
                 const username = userItem.dataset.username;
-                selectConversation(userId, username);
+                const photoProfil = userItem.dataset.photo;
+                selectConversation(userId, username, photoProfil);
             }
         });
     }
@@ -304,11 +365,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const allUsersList = document.getElementById('allUsersList');
     if (allUsersList) {
         allUsersList.addEventListener('click', (e) => {
-            const userItem = e.target.closest('.user-item');
+            const userItem = e.target.closest('.conversation-item');
             if (userItem) {
                 const userId = parseInt(userItem.dataset.userId);
                 const username = userItem.dataset.username;
-                startNewConversation(userId, username);
+                const photoProfil = userItem.dataset.photo;
+                startNewConversation(userId, username, photoProfil);
             }
         });
     }
