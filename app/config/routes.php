@@ -15,6 +15,11 @@ use flight\net\Router;
 $router->group('', function (Router $router) use ($app) {
 
 	$router->get('/login', function () use ($app) {
+		if (isset($_SESSION['user_id'])) {
+			unset($_SESSION['user_id']);
+			session_destroy();
+			session_start();
+		}
 		$app->render('login');
 	});
 
@@ -25,7 +30,7 @@ $router->group('', function (Router $router) use ($app) {
 			$result = $userController->login($username);
 			if (isset($result['success']) && isset($result['user'])) {
 				$_SESSION['user_id'] = $result['user']['id'];
-				$app->render('welcome');
+				$app->render('message', ['csp_nonce' => $app->get('csp_nonce')]);
 			} else {
 				$app->render('login', ['error' => $result['error']]);
 			}
@@ -36,6 +41,26 @@ $router->group('', function (Router $router) use ($app) {
 		$app->render('message', [ 'csp_nonce' => $app->get('csp_nonce') ]);
 	});
 
+	// Message API Routes
+	$router->get('/api/messages', function() use ($app) {
+		$messagesController = new MessagesController($app);
+		$messagesController->getAllConversations();
+	});
+
+	$router->get('/api/messages/@userId', function($userId) use ($app) {
+		$messagesController = new MessagesController($app);
+		$messagesController->getConversation($userId);
+	});
+
+	$router->post('/api/messages', function() use ($app) {
+		$messagesController = new MessagesController($app);
+		$messagesController->sendMessage();
+	});
+
+	$router->get('/api/messages/unread', function() use ($app) {
+		$messagesController = new MessagesController($app);
+		$messagesController->getUnreadCount();
+	});
 
 	$router->get('/hello-world/@name,@surname', function($name, $surname) {
 		echo '<h1>Hello world! Oh hey '.$name.' '. $surname .' !</h1>';
