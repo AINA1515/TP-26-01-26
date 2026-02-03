@@ -1,32 +1,43 @@
+<?php
+
+use app\controllers\UserController;
+
+    if(!isset($_SESSION['user_id'])){
+        Flight::redirect("/login");
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messages & Communication - Modern Bootstrap Admin</title>
-    
+
     <!-- SEO Meta Tags -->
     <meta name="description" content="Real-time messaging and communication center with chat interface">
     <meta name="keywords" content="bootstrap, admin, dashboard, messages, chat, communication">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg">
     <link rel="icon" type="image/png" href="/assets/icons/favicon.png">
-    
+
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
     <link rel="stylesheet" href="/assets/main-QD_VOj1Y.css">
 
-    
+
     <!-- Preload critical fonts -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" as="style">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"></head>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
 
 <body data-page="messages" class="messages-page" data-current-user-id="<?= $_SESSION['user_id'] ?? 0 ?>">
     <!-- Admin App Container -->
     <div class="admin-app">
         <div class="admin-wrapper" id="admin-wrapper">
-            
+
             <!-- Header -->
             <header class="admin-header">
                 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
@@ -41,14 +52,14 @@
                         <!-- Search Bar with Alpine.js -->
                         <div class="search-container flex-grow-1 mx-4" id="searchContainer">
                             <div class="position-relative">
-                                <input type="search" 
-                                       class="form-control" 
-                                       placeholder="Search... (Ctrl+K)"
-                                       id="searchInput"
-                                       data-search-input
-                                       aria-label="Search">
+                                <input type="search"
+                                    class="form-control"
+                                    placeholder="Search... (Ctrl+K)"
+                                    id="searchInput"
+                                    data-search-input
+                                    aria-label="Search">
                                 <i class="bi bi-search position-absolute top-50 end-0 translate-middle-y me-3"></i>
-                                
+
                                 <!-- Search Results Dropdown -->
                                 <div id="searchResults" class="position-absolute top-100 start-0 w-100 bg-white border rounded-2 shadow-lg mt-1 z-3" style="display: none;">
                                 </div>
@@ -59,64 +70,70 @@
                         <div class="navbar-nav flex-row">
                             <!-- Theme Toggle with Alpine.js -->
                             <div id="themeSwitch">
-                                <button class="btn btn-outline-secondary me-2" 
-                                        type="button" 
-                                        id="themeToggle"
-                                        data-bs-toggle="tooltip"
-                                        data-bs-placement="bottom"
-                                        title="Toggle theme">
+                                <button class="btn btn-outline-secondary me-2"
+                                    type="button"
+                                    id="themeToggle"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom"
+                                    title="Toggle theme">
                                     <i class="bi bi-sun-fill" id="lightIcon"></i>
                                     <i class="bi bi-moon-fill" id="darkIcon" style="display: none;"></i>
                                 </button>
                             </div>
 
                             <!-- Fullscreen Toggle -->
-                            <button class="btn btn-outline-secondary me-2" 
-                                    type="button" 
-                                    data-fullscreen-toggle
-                                    data-bs-toggle="tooltip"
-                                    data-bs-placement="bottom"
-                                    title="Toggle fullscreen">
+                            <button class="btn btn-outline-secondary me-2"
+                                type="button"
+                                data-fullscreen-toggle
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="bottom"
+                                title="Toggle fullscreen">
                                 <i class="bi bi-arrows-fullscreen icon-hover"></i>
                             </button>
 
                             <!-- Notifications -->
                             <div class="dropdown me-2" id="notificationBadge">
-                                <button class="btn btn-outline-secondary position-relative" 
-                                        type="button" 
-                                        data-bs-toggle="dropdown" 
-                                        aria-expanded="false">
+                                <button class="btn btn-outline-secondary position-relative"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false">
                                     <i class="bi bi-bell"></i>
                                     <span id="unreadBadge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none;"></span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><h6 class="dropdown-header">Notifications</h6></li>
+                                    <li>
+                                        <h6 class="dropdown-header">Notifications</h6>
+                                    </li>
                                     <li><a class="dropdown-item" href="#">New user registered</a></li>
                                     <li><a class="dropdown-item" href="#">Server status update</a></li>
                                     <li><a class="dropdown-item" href="#">New message received</a></li>
-                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
                                     <li><a class="dropdown-item text-center" href="#">View all notifications</a></li>
                                 </ul>
                             </div>
 
                             <!-- User Menu -->
                             <div class="dropdown">
-                                <button class="btn btn-outline-secondary d-flex align-items-center" 
-                                        type="button" 
-                                        data-bs-toggle="dropdown" 
-                                        aria-expanded="false">
-                                    <img src="/assets/images/avatar-placeholder.svg" 
-                                         alt="User Avatar" 
-                                         width="24" 
-                                         height="24" 
-                                         class="rounded-circle me-2">
-                                    <span class="d-none d-md-inline"><?= $user['username'] ?? "none" ?></span>
+                                <button class="btn btn-outline-secondary d-flex align-items-center"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <img src="/assets/images/avatar-placeholder.svg"
+                                        alt="User Avatar"
+                                        width="24"
+                                        height="24"
+                                        class="rounded-circle me-2">
+                                    <span class="d-none d-md-inline"><?= $_SESSION['user']['username'] ?? "none" ?></span>
                                     <i class="bi bi-chevron-down ms-1"></i>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Profile</a></li>
                                     <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Settings</a></li>
-                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
                                     <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
                                 </ul>
                             </div>
@@ -279,17 +296,17 @@
             </aside>
 
             <!-- Floating Hamburger Menu -->
-            <button class="hamburger-menu" 
-                    type="button" 
-                    data-sidebar-toggle
-                    aria-label="Toggle sidebar">
+            <button class="hamburger-menu"
+                type="button"
+                data-sidebar-toggle
+                aria-label="Toggle sidebar">
                 <i class="bi bi-list"></i>
             </button>
 
             <!-- Main Content -->
             <main class="admin-main">
                 <div class="container-fluid p-4 p-lg-4">
-                    
+
                     <!-- Page Header -->
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div>
@@ -309,7 +326,7 @@
                     <!-- Messages Container -->
                     <div class="messages-container">
                         <div class="messages-layout">
-                            
+
                             <!-- Conversations Sidebar -->
                             <div class="messages-sidebar">
                                 <!-- Sidebar Header -->
@@ -317,19 +334,19 @@
                                     <h5 class="header-title mb-0">Messages</h5>
                                     <div class="d-flex gap-2 mt-3">
                                         <div class="search-container flex-grow-1">
-                                            <input type="search" 
-                                                   id="searchUsers"
-                                                   class="form-control" 
-                                                   placeholder="Search conversations...">
+                                            <input type="search"
+                                                id="searchUsers"
+                                                class="form-control"
+                                                placeholder="Search conversations...">
                                             <i class="bi bi-search search-icon"></i>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Conversations List -->
                                 <div class="conversations-list" id="usersList">
                                     <!-- Conversations will be rendered here by my_script.js -->
-                                    
+
                                     <!-- Empty state for conversations -->
                                     <div class="empty-conversations" style="display: none;">
                                         <i class="bi bi-chat-dots"></i>
@@ -341,7 +358,7 @@
                             <!-- Chat Area -->
                             <div class="chat-area" id="conversationView">
                                 <!-- Chat will be rendered here by my_script.js -->
-                                
+
                                 <!-- Empty Chat State (shown when no conversation selected) -->
                                 <div class="empty-chat">
                                     <div class="empty-icon">
@@ -400,70 +417,71 @@
     <script src="/scripts/js/my_script.js" nonce="<?= $csp_nonce ?>"></script>
 
     <script nonce="<?= $csp_nonce ?>">
-      // Theme toggle functionality
-      document.addEventListener('DOMContentLoaded', () => {
-        const lightIcon = document.getElementById('lightIcon');
-        const darkIcon = document.getElementById('darkIcon');
-        
-        // Initialize theme from localStorage
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-bs-theme', savedTheme);
-        
-        // Update icon on page load
-        if (savedTheme === 'dark') {
-          lightIcon.style.display = 'none';
-          darkIcon.style.display = 'inline-block';
-        } else {
-          lightIcon.style.display = 'inline-block';
-          darkIcon.style.display = 'none';
-        }
-        
-        // Theme toggle button handler
-        const themeToggle = document.querySelector('[data-bs-toggle="tooltip"][title*="theme"]');
-        if (themeToggle) {
-          themeToggle.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-bs-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-bs-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            
-            // Toggle icons
-            if (newTheme === 'dark') {
-              lightIcon.style.display = 'none';
-              darkIcon.style.display = 'inline-block';
-            } else {
-              lightIcon.style.display = 'inline-block';
-              darkIcon.style.display = 'none';
-            }
-          });
-        }
-        
-        // Sidebar toggle
-        const toggleButton = document.querySelector('[data-sidebar-toggle]');
-        const wrapper = document.getElementById('admin-wrapper');
+        // Theme toggle functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            const lightIcon = document.getElementById('lightIcon');
+            const darkIcon = document.getElementById('darkIcon');
 
-        if (toggleButton && wrapper) {
-          const isCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
-          if (isCollapsed) {
-            wrapper.classList.add('sidebar-collapsed');
-            toggleButton.classList.add('is-active');
-          }
+            // Initialize theme from localStorage
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-bs-theme', savedTheme);
 
-          toggleButton.addEventListener('click', () => {
-            const isCurrentlyCollapsed = wrapper.classList.contains('sidebar-collapsed');
-            
-            if (isCurrentlyCollapsed) {
-              wrapper.classList.remove('sidebar-collapsed');
-              toggleButton.classList.remove('is-active');
-              localStorage.setItem('sidebar-collapsed', 'false');
+            // Update icon on page load
+            if (savedTheme === 'dark') {
+                lightIcon.style.display = 'none';
+                darkIcon.style.display = 'inline-block';
             } else {
-              wrapper.classList.add('sidebar-collapsed');
-              toggleButton.classList.add('is-active');
-              localStorage.setItem('sidebar-collapsed', 'true');
+                lightIcon.style.display = 'inline-block';
+                darkIcon.style.display = 'none';
             }
-          });
-        }
-      });
+
+            // Theme toggle button handler
+            const themeToggle = document.querySelector('[data-bs-toggle="tooltip"][title*="theme"]');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+                    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                    document.documentElement.setAttribute('data-bs-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+
+                    // Toggle icons
+                    if (newTheme === 'dark') {
+                        lightIcon.style.display = 'none';
+                        darkIcon.style.display = 'inline-block';
+                    } else {
+                        lightIcon.style.display = 'inline-block';
+                        darkIcon.style.display = 'none';
+                    }
+                });
+            }
+
+            // Sidebar toggle
+            const toggleButton = document.querySelector('[data-sidebar-toggle]');
+            const wrapper = document.getElementById('admin-wrapper');
+
+            if (toggleButton && wrapper) {
+                const isCollapsed = localStorage.getItem('sidebar-collapsed') === 'true';
+                if (isCollapsed) {
+                    wrapper.classList.add('sidebar-collapsed');
+                    toggleButton.classList.add('is-active');
+                }
+
+                toggleButton.addEventListener('click', () => {
+                    const isCurrentlyCollapsed = wrapper.classList.contains('sidebar-collapsed');
+
+                    if (isCurrentlyCollapsed) {
+                        wrapper.classList.remove('sidebar-collapsed');
+                        toggleButton.classList.remove('is-active');
+                        localStorage.setItem('sidebar-collapsed', 'false');
+                    } else {
+                        wrapper.classList.add('sidebar-collapsed');
+                        toggleButton.classList.add('is-active');
+                        localStorage.setItem('sidebar-collapsed', 'true');
+                    }
+                });
+            }
+        });
     </script>
 </body>
+
 </html>
