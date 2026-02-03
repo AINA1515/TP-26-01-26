@@ -25,13 +25,13 @@ PHASE 1: BACKEND
     - app/controllers/AuthController.php: login(), logout() (ok)
     - Sessions PHP (ok)
 
-[ ] 4. API Messages
+[x] 4. API Messages
     [x]- GET /api/messages -> toutes conversations
     [x]- GET /api/messages/:userId -> conversation specifique
     [x]- POST /api/messages -> envoyer message 
-    []- GET /api/messages/:id/read -> marquer lu
-    []- GET /api/messages/unread -> compteur non lus
-    []x- Fichier: app/controllers/MessagesController.php
+    [x]- GET /api/messages/:id/read -> marquer lu
+    [x]- GET /api/messages/unread -> compteur non lus
+    [x]- Fichier: app/controllers/MessagesController.php
 
 [x] 5. Modele Message
     - app/models/Message.php
@@ -41,30 +41,20 @@ PHASE 1: BACKEND
 
 PHASE 2: INTEGRATION FRONTEND
 
-[ ] 6. Connexion API
-    - Modifier: src-modern/scripts/components/messages.js
+[x] 6. Connexion API
     - Remplacer donnees fictives
     - Gestion etats: error, empty
 
-[ ] 7. Systeme Lu/Non Lu
+[x] 7. Systeme Lu/Non Lu
     - Badges messages non lus
     - Marquer auto comme lu a l_ouverture
     - Update compteur temps reel
-    - Modifier: messages.js, messages.html, CSS
 
-[ ] 8. Bouton Rafraichir
-    - Bouton avec icone rotation
-    - refreshMessages() function
-    - Modifier: messages.html, messages.js
-
+[x] 8. Bouton Rafraichir
 
 PHASE 3: FINALISATION
 
-[ ] 9. Login et Sessions
-    - Creer: public/login.html avec formulaire
-    - Liste utilisateurs test affichee
-    - Protection routes avec middleware
-    - Bouton deconnexion header
+[x] 9. Login et Sessions
 
 [ ] 10. Tests
     - Authentification: login, logout, acces protege
@@ -72,7 +62,6 @@ PHASE 3: FINALISATION
     - Rafraichissement
     - Edge cases: message vide, long, caracteres speciaux
 
-[ ] 11. Finitions UI
+[x] 11. Finitions UI
     - Timestamps lisibles
     - Avatars utilisateurs
-    - Indicateur en ligne

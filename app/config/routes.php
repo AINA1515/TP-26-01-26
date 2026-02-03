@@ -41,6 +41,16 @@ $router->group('', function (Router $router) use ($app) {
 		$app->render('message', [ 'csp_nonce' => $app->get('csp_nonce') ]);
 	});
 
+	$router->get('/logout', function () use ($app) {
+		$userController = new UserController($app);
+		$result = $userController->logout();
+		if (isset($result['success'])) {
+			$app->render('login');
+		} else {
+			$app->render('welcome', ['error' => $result['error']]);
+		}
+	});
+
 	// Message API Routes
 	$router->get('/api/messages', function() use ($app) {
 		$messagesController = new MessagesController($app);
@@ -57,23 +67,22 @@ $router->group('', function (Router $router) use ($app) {
 		$messagesController->sendMessage();
 	});
 
+	$router->get('/api/messages/read/@userId', function($userId) use ($app) {
+		$messagesController = new MessagesController($app);
+		$messagesController->markConversationRead($userId);
+	});
+
 	$router->get('/api/messages/unread', function() use ($app) {
 		$messagesController = new MessagesController($app);
 		$messagesController->getUnreadCount();
 	});
 
-	$router->get('/hello-world/@name,@surname', function($name, $surname) {
-		echo '<h1>Hello world! Oh hey '.$name.' '. $surname .' !</h1>';
+	$router->get('/api/users/all', function() use ($app) {
+		$userController = new UserController($app);
+		$userController->getAllUsersExceptCurrent();
 	});
 
-	$router->get('/logout', function () use ($app) {
-		$userController = new UserController($app);
-		$result = $userController->logout();
-		if (isset($result['success'])) {
-			$app->render('login');
-		} else {
-			$app->render('welcome', ['error' => $result['error']]);
-		}
-	});
 }, [SecurityHeadersMiddleware::class]);
+
+
 

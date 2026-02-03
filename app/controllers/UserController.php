@@ -81,7 +81,38 @@ class UserController
 
 	public function logout()
 	{
-		session_destroy();
+		if (isset($_SESSION['user_id'])) {
+			unset($_SESSION['user_id']);
+			session_destroy();
+			session_start();
+		}
 		return ['success' => 'Logout successful'];
+	}
+
+	public function getAllUsersExceptCurrent()
+	{
+		if (!isset($_SESSION['user_id'])) {
+			echo json_encode([
+				'status' => 'error',
+				'message' => 'User not authenticated'
+			]);
+			return;
+		}
+
+		$currentUserId = $_SESSION['user_id'];
+		$allUsers = UserModel::getAllUser();
+		
+		// Filter out current user
+		$users = array_filter($allUsers, function($user) use ($currentUserId) {
+			return $user['id'] != $currentUserId;
+		});
+
+		// Reindex array
+		$users = array_values($users);
+
+		echo json_encode([
+			'status' => 'success',
+			'data' => $users
+		]);
 	}
 }
