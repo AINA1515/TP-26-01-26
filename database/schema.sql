@@ -21,4 +21,3 @@ create table messages (
     foreign key (from_user_id) references users(id),
     foreign key (to_user_id) references users(id)
 );
-
