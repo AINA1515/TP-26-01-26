@@ -21,7 +21,7 @@ class UserModel
     {
         $db = Flight::db();
         $stmt = $db->prepare("SELECT * FROM users WHERE id = :id");
-        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+        $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
@@ -30,7 +30,7 @@ class UserModel
     {
         $db = Flight::db();
         $stmt = $db->prepare("SELECT * FROM users WHERE username = :username");
-        $stmt->bindParam(':username', $username, \PDO::PARAM_STR);
+        $stmt->bindValue(':username', $username, \PDO::PARAM_STR);
         $stmt->execute();
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
@@ -40,13 +40,13 @@ class UserModel
         $hashedPassword = null;
         $db = Flight::db();
         $stmt = $db->prepare("INSERT INTO users (username, mdp, email, photoProfil) VALUES (:username, :password, :email, :photoProfil)");
-        $stmt->bindParam(':username', $username);
+        $stmt->bindValue(':username', $username);
         if (!empty($password)) {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         }
-        $stmt->bindParam(':password', $hashedPassword);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':photoProfil', $avatar);
+        $stmt->bindValue(':password', $hashedPassword);
+        $stmt->bindValue(':email', $email);
+        $stmt->bindValue(':photoProfil', $avatar);
         return $stmt->execute();
     }
 }

@@ -1,0 +1,48 @@
+/* Custom Avatar Styles for Initial-based Avatars */
+
+.user-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--bs-primary), var(--bs-primary-dark, #0056b3));
+    color: white;
+    font-weight: 600;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+/* Avatar in conversation list */
+.conversation-avatar .user-avatar {
+    width: 48px;
+    height: 48px;
+    font-size: 1.25rem;
+}
+
+/* Avatar in chat header */
+.chat-avatar-container .user-avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 1.125rem;
+}
+
+/* Avatar in message area */
+.message-avatar.user-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Ensure proper centering */
+.user-avatar::before {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+}

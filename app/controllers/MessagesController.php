@@ -11,7 +11,15 @@ class MessagesController
      */
     public function getAllConversations()
     {
-        $currentUserId = 1; // A adapter avec l'authentification
+        if (!isset($_SESSION['user_id'])) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'User not authenticated'
+            ]);
+            return;
+        }
+        
+        $currentUserId = $_SESSION['user_id'];
         
         try {
             $message = new Message();
@@ -34,8 +42,15 @@ class MessagesController
      */
     public function getConversation($userId)
     {
-        $currentUserId = 1; // A adapter avec l'authentification
+        if (!isset($_SESSION['user_id'])) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'User not authenticated'
+            ]);
+            return;
+        }
         
+        $currentUserId = $_SESSION['user_id'];
         
         try {
             $message = new Message();
@@ -58,8 +73,15 @@ class MessagesController
      */
     public function sendMessage()
     {
-        $currentUserId = 1; // A adapter avec l'authentification
+        if (!isset($_SESSION['user_id'])) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'User not authenticated'
+            ]);
+            return;
+        }
         
+        $currentUserId = $_SESSION['user_id'];
         
         try {
             $json = file_get_contents('php://input');
@@ -106,8 +128,15 @@ class MessagesController
      */
     public function getUnreadCount()
     {
-        $currentUserId = 1; // A adapter avec l'authentification
+        if (!isset($_SESSION['user_id'])) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'User not authenticated'
+            ]);
+            return;
+        }
         
+        $currentUserId = $_SESSION['user_id'];
         
         try {
             $message = new Message();
@@ -116,6 +145,37 @@ class MessagesController
             echo json_encode([
                 'status' => 'success',
                 'unreadCount' => $count
+            ]);
+        } catch (\Exception $e) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    /**
+     * GET /api/messages/read/@userId -> mark conversation as read
+     */
+    public function markConversationRead($userId)
+    {
+        if (!isset($_SESSION['user_id'])) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'User not authenticated'
+            ]);
+            return;
+        }
+        
+        $currentUserId = $_SESSION['user_id'];
+        
+        try {
+            $message = new Message();
+            $message->markConversationAsRead($currentUserId, (int)$userId);
+            
+            echo json_encode([
+                'status' => 'success',
+                'message' => 'Conversation marked as read'
             ]);
         } catch (\Exception $e) {
             echo json_encode([

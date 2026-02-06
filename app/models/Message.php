@@ -34,10 +34,6 @@ class Message
                     WHEN from_user_id = :userId THEN to_photo
                     ELSE from_photo
                 END as photoProfil,
-                CASE 
-                    WHEN from_user_id = :userId THEN to_online
-                    ELSE from_online
-                END as is_online,
                 last_message,
                 last_message_time,
                 CASE 

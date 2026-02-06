@@ -1,7 +1,5 @@
--- Views to simplify message queries
 use siteTemplate;
 
--- View for message details with user information
 DROP VIEW IF EXISTS vw_messages_with_users;
 CREATE VIEW vw_messages_with_users AS
 SELECT 
@@ -19,7 +17,6 @@ FROM messages m
 JOIN users u_sender ON m.from_user_id = u_sender.id
 JOIN users u_recipient ON m.to_user_id = u_recipient.id;
 
--- View for conversation participants with last message info
 DROP VIEW IF EXISTS vw_conversation_list;
 CREATE VIEW vw_conversation_list AS
 SELECT 
